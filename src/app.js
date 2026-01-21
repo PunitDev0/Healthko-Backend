@@ -3,7 +3,8 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import connectDB from './lib/db.js';
 import cookieParser from 'cookie-parser';
-
+import swaggerSpec from "./swagger.js";
+import swaggerUi from "swagger-ui-express";
 dotenv.config();
 connectDB();
 
@@ -52,6 +53,8 @@ app.use("/api/addresses", addressRoutes);
 app.use("/api/cart", cartRoutes);
 app.use("/api/orders", orderRoutes);
 app.use("/api/doctor", doctorRoutes);
+
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 
 // Error handling middleware
