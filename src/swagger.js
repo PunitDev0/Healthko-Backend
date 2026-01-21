@@ -9,7 +9,7 @@ const swaggerDefinition = {
   },
   servers: [
     {
-      url: "http://localhost:5000",
+      url: "https://api.healthko.in/",
       description: "Local Server",
     },
   ],
