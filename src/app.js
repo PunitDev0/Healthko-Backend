@@ -44,6 +44,7 @@ import addressRoutes from './routes/address.route.js';
 import cartRoutes from './routes/cart.route.js';
 import orderRoutes from './routes/order.route.js';
 import doctorRoutes from './routes/doctor.route.js';
+import paymentRoutes from './routes/payment.route.js';
 
 app.use('/api/auth', AuhtRoutes);
 app.use("/api/services", serviceRoutes);
@@ -53,6 +54,7 @@ app.use("/api/addresses", addressRoutes);
 app.use("/api/cart", cartRoutes);
 app.use("/api/orders", orderRoutes);
 app.use("/api/doctor", doctorRoutes);
+app.use("/api/payments", paymentRoutes);
 
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
