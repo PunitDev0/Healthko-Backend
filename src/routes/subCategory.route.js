@@ -41,11 +41,18 @@ const router = express.Router();
  *                 description: Parent category ID
  *                 example: "66a1f2c1d9f4d9a8b1234567"
  *               description:
- *                 type: string
- *                 example: "Deep bathroom cleaning services"
- *               isActive:
- *                 type: boolean
- *                 example: true
+                 type: string
+                 example: "Deep bathroom cleaning services"
+               imageUrl:
+                 type: string
+                 example: "https://example.com/image.png"
+               type:
+                 type: string
+                 enum: [symptoms, categories, none]
+                 example: "symptoms"
+               isActive:
+                 type: boolean
+                 example: true
  *     responses:
  *       201:
  *         description: Subcategory created successfully
@@ -72,13 +79,28 @@ router.post("/", createSubCategory);
  *           type: string
  *         description: Filter by category ID
  *         example: "66a1f2c1d9f4d9a8b1234567"
- *       - name: isActive
- *         in: query
- *         required: false
- *         schema:
- *           type: boolean
- *         description: Filter by active status
- *         example: true
+ *       - name: type
+         in: query
+         required: false
+         schema:
+           type: string
+           enum: [symptoms, categories, none]
+         description: Filter by type
+         example: "symptoms"
+       - name: grouped
+         in: query
+         required: false
+         schema:
+           type: boolean
+         description: Group results by type (symptoms/categories)
+         example: true
+       - name: isActive
+         in: query
+         required: false
+         schema:
+           type: boolean
+         description: Filter by active status
+         example: true
  *     responses:
  *       200:
  *         description: Subcategories fetched successfully

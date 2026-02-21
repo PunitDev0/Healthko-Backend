@@ -25,6 +25,16 @@ const subCategorySchema = new mongoose.Schema(
       type: String,
       trim: true,
     },
+    imageUrl: {
+      type: String,
+      trim: true,
+    },
+
+    type: {
+      type: String,
+      enum: ["symptoms", "categories", "none"],
+      default: "none",
+    },
 
     isActive: {
       type: Boolean,

@@ -7,7 +7,7 @@ import Category from '../models/Category.js';
  */
 export const createSubCategory = async (req, res) => {
   try {
-    const { name, slug, category, description, isActive } = req.body;
+    const { name, slug, category, description, imageUrl, type, isActive } = req.body;
 
     // 🔴 Validation
     if (!name || !slug || !category) {
@@ -44,6 +44,8 @@ export const createSubCategory = async (req, res) => {
       slug,
       category,
       description,
+      imageUrl,
+      type,
       isActive,
     });
 
@@ -70,17 +72,33 @@ export const createSubCategory = async (req, res) => {
  */
 export const getSubCategories = async (req, res) => {
   try {
-    const { category, isActive = 'true' } = req.query;
+    const { category, type, isActive = 'true', grouped = 'false' } = req.query;
 
     const filter = {};
     if (category) filter.category = category;
+    if (type) filter.type = type;
     if (isActive !== undefined) {
       filter.isActive = isActive === 'true';
     }
 
     const subCategories = await SubCategory.find(filter)
       .populate('category', 'name slug')
-      .sort({ createdAt: -1 });
+      .sort({ name: 1 });
+
+    // Handle grouped response
+    if (grouped === 'true') {
+      const groupedData = {
+        symptoms: subCategories.filter(s => s.type === 'symptoms'),
+        categories: subCategories.filter(s => s.type === 'categories'),
+        others: subCategories.filter(s => s.type !== 'symptoms' && s.type !== 'categories')
+      };
+
+      return res.status(200).json({
+        success: true,
+        count: subCategories.length,
+        data: groupedData
+      });
+    }
 
     res.status(200).json({
       success: true,
@@ -91,7 +109,8 @@ export const getSubCategories = async (req, res) => {
     console.error('Fetch subcategories error:', error);
     res.status(500).json({
       success: false,
-      message: 'Failed to fetch subcategories',
+      message: error.name === 'CastError' ? 'Invalid Category ID format' : 'Failed to fetch subcategories',
     });
   }
 };
+
